@@ -3,6 +3,7 @@ import 'core-js/stable';
 import recipeView from './Views/recipeView';
 import searchView from './Views/searchView';
 import resultsView from './Views/resultsView';
+import paginationView from './Views/paginationView';
 
 if (model.hot) {
   model.hot.accept();
@@ -36,16 +37,28 @@ async function controlSearchResults() {
 
     // 3) Render results
     // resultsView.render(model.state.search.results);
+
     resultsView.render(model.getSearchResultsPage());
+    // 4) Render initial pagination buttons
+
+    paginationView.render(model.state.search);
   } catch (error) {
     console.log(error);
   }
 }
-controlSearchResults();
+
+function controlPagination(goToPage) {
+  //  Render NEW results
+  resultsView.render(model.getSearchResultsPage(goToPage));
+
+  //  Render NEW pagination buttons
+  paginationView.render(model.state.search);
+}
 
 function init() {
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 }
 
 init();
