@@ -9,6 +9,7 @@ export const state = {
     page: 1,
     resultsPerPage: RES_PER_PAGE,
   },
+  bookmarks: [],
 };
 
 export async function loadRecipe(id) {
@@ -45,6 +46,7 @@ export async function loadSearchResults(query) {
         image: rec.image_url,
       };
     });
+    state.search.page = 1;
   } catch (error) {
     console.log(error);
     throw error;
@@ -65,4 +67,12 @@ export function updateServings(newServings) {
   });
 
   state.recipe.servings = newServings;
+}
+
+export function addBookmark(recipe) {
+  // Add bookmark
+  state.bookmarks.push(recipe);
+
+  // Mark current recipe
+  if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
 }
