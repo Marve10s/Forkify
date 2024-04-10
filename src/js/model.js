@@ -39,7 +39,6 @@ export async function loadSearchResults(query) {
   try {
     state.search.query = query;
     const data = await getJSON(`${API_URL}?search=${query}`);
-    console.log(data);
 
     state.search.results = data.data.recipes.map(rec => {
       return {
@@ -72,12 +71,18 @@ export function updateServings(newServings) {
   state.recipe.servings = newServings;
 }
 
+function persistBookmarks() {
+  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+}
+
 export function addBookmark(recipe) {
   // Add bookmark
   state.bookmarks.push(recipe);
 
   // Mark current recipe
   if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+
+  persistBookmarks();
 }
 
 export function deleteBookmark(id) {
@@ -87,4 +92,13 @@ export function deleteBookmark(id) {
 
   // Mark recipe as not bookmarked
   if (id === state.recipe.id) state.recipe.bookmarked = false;
+
+  persistBookmarks();
 }
+
+function init() {
+  const storage = localStorage.getItem('bookmarks');
+  if (storage) state.bookmarks = JSON.parse(storage);
+}
+
+init();
