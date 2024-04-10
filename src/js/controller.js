@@ -1,14 +1,17 @@
 import * as model from './model';
+import { MODAL_CLOSE_SEC } from './config';
 import 'core-js/stable';
 import recipeView from './Views/recipeView';
 import searchView from './Views/searchView';
 import resultsView from './Views/resultsView';
 import paginationView from './Views/paginationView';
 import bookmarksView from './Views/bookmarksView';
+import addRecipeView from './Views/addRecipeView';
 
 if (model.hot) {
   model.hot.accept();
 }
+
 export async function controlRecipes() {
   try {
     const id = window.location.hash.slice(1);
@@ -31,13 +34,12 @@ export async function controlRecipes() {
 
 async function controlSearchResults() {
   try {
-    // console.log(resultsView);
+    resultsView.renderSpinner();
     // 1) Get search query
     const query = searchView.getQuery();
     if (!query) return;
 
     // 2) Load search
-    resultsView.renderSpinner();
     await model.loadSearchResults(query);
 
     // 3) Render results
@@ -83,6 +85,36 @@ function controlBookmarks() {
   bookmarksView.render(model.state.bookmarks);
 }
 
+async function controlAddRecipe(newRecipe) {
+  try {
+    // Loading spinner
+    addRecipeView.renderSpinner();
+
+    // Upload the new recipe data
+    await model.uploadRecipe(newRecipe);
+
+    // Render recipe
+    recipeView.render(model.state.recipe);
+
+    // Success message
+    addRecipeView.renderMessage();
+
+    // Render bookmark view
+    bookmarksView.render(model.state.bookmarks);
+
+    // Change IF in URL
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
+
+    // Close form
+    setTimeout(() => {
+      addRecipeView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000);
+  } catch (error) {
+    console.error(error);
+    addRecipeView.renderError(error.message);
+  }
+}
+
 function init() {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
@@ -90,10 +122,7 @@ function init() {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  addRecipeView.addHandlerUpload(controlAddRecipe);
 }
 
 init();
-
-function clearBookmarks() {
-  localStorage.clear('bookmarks');
-}
