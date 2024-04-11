@@ -175,4 +175,4 @@ function clearBookmarks() {
 //   }
 // }
 
-clearBookmarks();
+// clearBookmarks();
