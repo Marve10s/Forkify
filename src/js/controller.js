@@ -1,12 +1,11 @@
 import * as model from './model';
-import { MODAL_CLOSE_SEC } from './config';
 import 'core-js/stable';
 import recipeView from './Views/recipeView';
 import searchView from './Views/searchView';
 import resultsView from './Views/resultsView';
 import paginationView from './Views/paginationView';
 import bookmarksView from './Views/bookmarksView';
-import addRecipeView from './Views/addRecipeView';
+// import addRecipeView from './Views/addRecipeView';
 
 if (model.hot) {
   model.hot.accept();
@@ -85,35 +84,35 @@ function controlBookmarks() {
   bookmarksView.render(model.state.bookmarks);
 }
 
-async function controlAddRecipe(newRecipe) {
-  try {
-    // Loading spinner
-    addRecipeView.renderSpinner();
+// async function controlAddRecipe(newRecipe) {
+//   try {
+//     // Loading spinner
+//     addRecipeView.renderSpinner();
 
-    // Upload the new recipe data
-    await model.uploadRecipe(newRecipe);
+//     // Upload the new recipe data
+//     await model.uploadRecipe(newRecipe);
 
-    // Render recipe
-    recipeView.render(model.state.recipe);
+//     // Render recipe
+//     recipeView.render(model.state.recipe);
 
-    // Success message
-    addRecipeView.renderMessage();
+//     // Success message
+//     addRecipeView.renderMessage();
 
-    // Render bookmark view
-    bookmarksView.render(model.state.bookmarks);
+//     // Render bookmark view
+//     bookmarksView.render(model.state.bookmarks);
 
-    // Change IF in URL
-    window.history.pushState(null, '', `#${model.state.recipe.id}`);
+//     // Change IF in URL
+//     window.history.pushState(null, '', `#${model.state.recipe.id}`);
 
-    // Close form
-    setTimeout(() => {
-      addRecipeView.toggleWindow();
-    }, MODAL_CLOSE_SEC * 1000);
-  } catch (error) {
-    console.error(error);
-    addRecipeView.renderError(error.message);
-  }
-}
+//     // Close form
+//     setTimeout(() => {
+//       addRecipeView.toggleWindow();
+//     }, MODAL_CLOSE_SEC * 1000);
+//   } catch (error) {
+//     console.error(error);
+//     addRecipeView.renderError(error.message);
+//   }
+// }
 
 function init() {
   bookmarksView.addHandlerRender(controlBookmarks);
@@ -122,7 +121,7 @@ function init() {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
-  addRecipeView.addHandlerUpload(controlAddRecipe);
+  // addRecipeView.addHandlerUpload(controlAddRecipe);
 }
 
 init();
