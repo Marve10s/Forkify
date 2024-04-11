@@ -7,6 +7,7 @@ import resultsView from './Views/resultsView';
 import paginationView from './Views/paginationView';
 import bookmarksView from './Views/bookmarksView';
 import addRecipeView from './Views/addRecipeView';
+import deleteRecipeView from './Views/deleteRecipeView';
 
 if (model.hot) {
   model.hot.accept();
@@ -102,16 +103,22 @@ async function controlAddRecipe(newRecipe) {
     // Render bookmark view
     bookmarksView.render(model.state.bookmarks);
 
-    // Change IF in URL
+    // Change ID in URL
     window.history.pushState(null, '', `#${model.state.recipe.id}`);
-
-    // Close form
-    setTimeout(() => {
-      addRecipeView.toggleWindow();
-    }, MODAL_CLOSE_SEC * 1000);
   } catch (error) {
     console.error(error);
     addRecipeView.renderError(error.message);
+  }
+}
+
+async function deleteRecipe() {
+  try {
+    controlAddBookmark();
+    await model.deleteUploadRecipe(model.state.recipe);
+    console.log('CLICCCKKK');
+  } catch (error) {
+    console.error(error);
+    deleteRecipe.renderError(error.message);
   }
 }
 
@@ -123,6 +130,7 @@ function init() {
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
   addRecipeView.addHandlerUpload(controlAddRecipe);
+  deleteRecipeView.addHandlerClick(deleteRecipe);
 }
 
 init();
