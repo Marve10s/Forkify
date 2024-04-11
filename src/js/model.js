@@ -36,6 +36,7 @@ export async function loadRecipe(id) {
     if (state.bookmarks.some(bookmark => bookmark.id === id)) {
       state.recipe.bookmarked = true;
     } else state.recipe.bookmarked = false;
+    console.log(state.recipe);
   } catch (error) {
     throw error;
   }
@@ -146,5 +147,32 @@ function clearBookmarks() {
 //     throw error;
 //   }
 // }
+
+export async function deleteUploadRecipe(recipe) {
+  try {
+    if (!recipe.key) return;
+    const recipeKeyToDelete = recipe.key;
+    const idToDelete = recipe.id;
+
+    const response = await fetch(
+      `${API_URL}${idToDelete}?key=${recipeKeyToDelete}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (!response.ok) throw new Error();
+
+    // Check if the request was successful
+    if (response.ok) {
+      console.log('Recipe deleted successfully');
+    }
+  } catch (error) {
+    throw error;
+  }
+}
 
 // clearBookmarks();

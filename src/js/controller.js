@@ -5,7 +5,7 @@ import searchView from './Views/searchView';
 import resultsView from './Views/resultsView';
 import paginationView from './Views/paginationView';
 import bookmarksView from './Views/bookmarksView';
-// import addRecipeView from './Views/addRecipeView';
+import addRecipeView from './Views/addRecipeView';
 
 if (model.hot) {
   model.hot.accept();
@@ -101,18 +101,18 @@ function controlBookmarks() {
 //     // Render bookmark view
 //     bookmarksView.render(model.state.bookmarks);
 
-//     // Change IF in URL
-//     window.history.pushState(null, '', `#${model.state.recipe.id}`);
+    // Change IF in URL
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
 
-//     // Close form
-//     setTimeout(() => {
-//       addRecipeView.toggleWindow();
-//     }, MODAL_CLOSE_SEC * 1000);
-//   } catch (error) {
-//     console.error(error);
-//     addRecipeView.renderError(error.message);
-//   }
-// }
+    // Close form
+    setTimeout(() => {
+      addRecipeView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000);
+  } catch (error) {
+    console.error(error);
+    addRecipeView.renderError(error.message);
+  }
+}
 
 function init() {
   bookmarksView.addHandlerRender(controlBookmarks);
@@ -121,7 +121,7 @@ function init() {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
-  // addRecipeView.addHandlerUpload(controlAddRecipe);
+  addRecipeView.addHandlerUpload(controlAddRecipe);
 }
 
 init();
