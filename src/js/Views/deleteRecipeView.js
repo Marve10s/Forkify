@@ -17,6 +17,7 @@ class deleteRecipeView extends View {
         // Hide the recipe element from the DOM
         this._parentElement.style.display = 'none';
         window.location.hash = '';
+        window.location.reload();
       }.bind(this)
     );
   }

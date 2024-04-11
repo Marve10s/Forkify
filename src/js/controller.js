@@ -118,7 +118,7 @@ async function deleteRecipe() {
     console.log('CLICCCKKK');
   } catch (error) {
     console.error(error);
-    deleteRecipe.renderError(error.message);
+    // deleteRecipe.renderError(error.message);
   }
 }
 
