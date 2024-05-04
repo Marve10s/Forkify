@@ -3,9 +3,6 @@
 This is the project about receipts. 
 You can check this by link:  **https://forkrecipes.netlify.app/**
 
-##  Custom API I used : https://forkify-api.herokuapp.com/v2
-
-
 Technology I used here: 
 
 
